@@ -1,0 +1,32 @@
+-thunk middleware/ create acync thunk
+    - we are using it for
+    01 - call API
+    02 - get global state 
+    03 - dispatsh another action 
+-acync will create 3 types of action
+    01 - pending   => loading api now 
+    02 - fulfilled => data completed
+    03 - rejected  => error befor arrvial data 
+- saga middleware 
+    - create acync thunk is better for current bean
+------------------
+the function createASyncThunk has to param 
+    01- typePrefix => string = "book/getBooks"
+    02- payloadCreator  => async (args , thunkApi) => {here is fetch data from APi}
+---------------
+stage of fetch data from APi
+part 1 
+getBooks -> createASyncThunk -> create 3 types of actions by createAction(type, (payLoad,meta{arg,reqId,reqStatus}))  function
+    - pending -> createAction("book/getBooks/pending" , (payLoad) { payLoad})
+    - fulfilled -> createAction("book/getBooks/fulfilled" , (payLoad) { payLoad})
+    - rejected -> createAction("book/getBooks/rejected" , (payLoad) { payLoad})
+part 2
+befor fetch -> dispatsh({type : "book/getBooks/pending", payLoad : undefined})
+--
+after fetch and respons -> dispatsh({type : "book/getBooks/fulfilled", payLoad : data})
+--
+after fetch and reject -> dispatsh({type : "book/getBooks/rejected", payLoad : error})
+-----------
+thunkApi has malti methods
+    - rejectWithValue -> handle reject error 
+    - gaeSatet -> access global state 
